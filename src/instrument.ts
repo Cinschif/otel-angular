@@ -11,19 +11,11 @@ import { ZoneContextManager } from '@opentelemetry/context-zone';
  
 const provider = new WebTracerProvider();
  
-// For demo purposes only, immediately log traces to the console
-provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
-//nao tem configuraçao de performance, se o collector ta down, a aplicaçao para
- 
 // Batch traces before sending them to Otel Collector (under construction)
 provider.addSpanProcessor(
-  //como configurar para trabalhar com o collector
-    new BatchSpanProcessor(
+     new BatchSpanProcessor(
         new OTLPTraceExporter({
-            url: 'http://localhost:4317',
-           // headers: {
-              //  'x-honeycomb-team': 'WuP2oXT5lYbqFnoGuUxfoD',
-          //  },
+            url: 'http://localhost:4318/v1/traces',
         }),
     ),
 );
