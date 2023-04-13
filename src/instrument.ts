@@ -8,22 +8,35 @@ import {
 import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations-web';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { ZoneContextManager } from '@opentelemetry/context-zone';
- 
-const provider = new WebTracerProvider();
+import { Resource } from "@opentelemetry/resources";
+import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
+
+const resource =
+  Resource.default().merge(
+    new Resource({
+      [SemanticResourceAttributes.SERVICE_NAME]: "Otel-Angular",
+      [SemanticResourceAttributes.SERVICE_VERSION]: "0.1.0",
+    })
+  );
+
+const provider = new WebTracerProvider({
+    resource: resource,
+});
  
 // Batch traces before sending them to Otel Collector (under construction)
 provider.addSpanProcessor(
      new BatchSpanProcessor(
         new OTLPTraceExporter({
             url: 'http://localhost:4318/v1/traces',
-        }),
+           
+        }) ,
+               
     ),
 );
  
 provider.register({
   contextManager: new ZoneContextManager(),
-});
- 
+}); 
  
 registerInstrumentations({
     instrumentations: [
@@ -35,3 +48,4 @@ registerInstrumentations({
         }),
     ],
 });
+
