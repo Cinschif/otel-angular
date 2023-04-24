@@ -10,6 +10,7 @@ export class HelloComponent  {
   @Input() name=" ";
 
   clicar(){
-    console.log(this.name)
+    console.log(this.name);
+    console.log("Testing logs...")
   } 
 }
