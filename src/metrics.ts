@@ -47,7 +47,7 @@ const histogram = meter.createHistogram('test_histogram', {
   description: 'Example of a Histogram',
 });
 
-const attributes = { pid: 9, environment: 'staging' };
+const attributes = { pid: 8, environment: 'staging' };
 
 setInterval(() => {
   requestCounter.add(1, attributes);
