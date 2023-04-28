@@ -1,17 +1,14 @@
 //Log Imports
-//import { diag } from '@opentelemetry/core';
 import { Resource } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
-//import {
- // LoggerProvider,
- // } from '@opentelemetry/sdk-logs';
-//import { logs, SeverityNumber } from '@opentelemetry/api-logs';
-import { LogLevel, diag } from '@opentelemetry/core';
-import { CollectorExporterNode } from '@opentelemetry/exporter-collector';
-import { ConsoleSpanExporter, SimpleSpanProcessor } from '@opentelemetry/tracing';
+import {SeverityNumber } from '@opentelemetry/api-logs';
+import {
+  LoggerProvider,
+  BatchLogRecordProcessor,
+} from '@opentelemetry/sdk-logs';
+import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 
-//Logs
-
+// waiting for package @opentelemetry/exporter-logs-otlp-http to be available
 const resource =
   Resource.default().merge(
     new Resource({
@@ -19,65 +16,32 @@ const resource =
       [SemanticResourceAttributes.SERVICE_VERSION]: "0.1.0",
          })
   );
-
-//const collectorOptions={
-  // url: 'http://localhost:4318/v1/logs',
-   // resource:resource
-    //};
-
-// to start a logger, first initialize the logger provider
-const collectorExporter = new CollectorExporterNode({
-resource: resource,
-url: 'http://localhost:55680/v1/logs',
-});
-
-// Create a new ConsoleSpanExporter instance for debugging purposes
-const consoleExporter = new ConsoleSpanExporter();
-
-// Create a new SimpleSpanProcessor instance and add the exporters
-const spanProcessor = new SimpleSpanProcessor(collectorExporter);
-spanProcessor.addSpanExporter(consoleExporter);
-
-// Set the log level to debug
-diag.setLogger({
-debug: (message) => console.debug(message),
-info: (message) => console.info(message),
-warn: (message) => console.warn(message),
-error: (message) => console.error(message),
-});
-
-// Set the global log level to debug
-diag.setLogLevel(LogLevel.DEBUG);
-
-// Register the span processor
-diag.registerLogger(spanProcessor);
-
-// Now you can use the console object to log messages
-console.log('Hello, world!');
-console.warn('This is a warning!');
-console.error('This is an error!');
-
-//////////////////////////////////////////////////////////////////
-
-//const loggerProvider = new LoggerProvider();
-//logs.setGlobalLoggerProvider(loggerProvider);
-
-/* returns loggerProvider (no-op if a working provider has not been initialized) */
-//logs.getLoggerProvider();
-
-//Add a processor to export log record
-//loggerProvider.addLogRecordProcessor(
- //new BatchLogRecordProcessor (loggerExporter));
  
-//  To create a log record, you first need to get a Logger instance
-//onst logger = logs.getLogger('example');
+  // The OTLPLogExporter in Web expects the endpoint to end in `/v1/logs`.
+  const collectorOptions = {
+    url: 'http://localhost:4318/v1/logs', 
+    headers: {}, // an optional object containing custom headers to be sent with each request
+    concurrencyLimit: 1, // an optional limit on pending requests
+    };
 
-// emit a log record
-//logger.emit({
- //severityNumber: SeverityNumber.INFO,
-  //severityText: 'INFO',
-  //body: 'this is a log record body',
-  //attributes: { 'log.type': 'custom' },
-//});
-    
+  const logExporter = new OTLPLogExporter(collectorOptions);
   
+  //to start a logger, first initialize the logger provider
+    const loggerProvider = new LoggerProvider({
+      resource:resource,
+    });
+
+  //Add a processor to export log record
+    loggerProvider.addLogRecordProcessor(
+      new BatchLogRecordProcessor(logExporter));
+  
+  //  To create a log record, you first need to get a Logger instance
+    const logger = loggerProvider.getLogger('default', '1.0.0');
+
+  // Emit a log
+    logger.emit({
+      severityNumber: SeverityNumber.INFO,
+      severityText: 'info',
+      body: 'this is a log body',
+      attributes: { 'log.type': 'custom' },
+    });

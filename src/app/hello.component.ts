@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { logs, SeverityNumber } from '@opentelemetry/api-logs';
 
 @Component({
   selector: 'hello',
@@ -11,7 +10,7 @@ import { logs, SeverityNumber } from '@opentelemetry/api-logs';
 export class HelloComponent  {
    @Input() name=" ";
   
-   clicar(){
+   clicar(){   
     console.log(this.name);
     console.log("Testing logs...")
   } 
