@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+
 @Component({
   selector: 'hello',
   template: `<h1>Hello {{name}}!</h1> <button type="button" (click)= "clicar()">click</button>`,
@@ -7,9 +8,10 @@ import { Component, Input } from '@angular/core';
 })
 
 export class HelloComponent  {
-  @Input() name=" ";
-
-  clicar(){
-    console.log(this.name)
+   @Input() name=" ";
+  
+   clicar(){   
+    console.log(this.name);
+    console.log("Testing logs...")
   } 
 }
