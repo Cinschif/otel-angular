@@ -2,9 +2,9 @@ import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-import './instrument';
-import './metrics';
-//import './logs';
+import './opentelemetry/instrument';
+import './opentelemetry/metrics';
+//import './opentelemetry/logs';
 
 if (environment.production) {
   enableProdMode();
