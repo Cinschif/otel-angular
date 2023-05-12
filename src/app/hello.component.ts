@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { logs, SeverityNumber } from '@opentelemetry/api-logs';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -16,22 +15,19 @@ export class HelloComponent  {
    readonly apiURL! : string;
 
    constructor(private readonly httpClient: HttpClient,) {
-    this.apiURL = 'http://sharp.mcd:90/order/api/v1/order';
+    this.apiURL = "https://localhost:44300/api/Person";
    }
 
    get<TResult>(
     url: string,
-    options: { headers?: HttpHeaders } = {}
-  ): Observable<TResult> {
-    const { headers } = options;
-    return this.httpClient.get<TResult>(url, {headers}).pipe(
+     ): Observable<TResult> {
+        return this.httpClient.get<TResult>(url,).pipe(
       catchError(this.handleError)
     );
   }
 
    clicar(){
-    const headers = new HttpHeaders({'x-client-cert':'cert'})
-    this.get(this.apiURL, {headers}).subscribe(res => console.log(res))
+       this.get(this.apiURL).subscribe(res => console.log(res))
     
     console.log(this.name);
     console.log("Testing logs...")

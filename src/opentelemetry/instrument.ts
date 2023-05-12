@@ -1,4 +1,3 @@
-//Trace Imports
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import {
     WebTracerProvider,
@@ -10,7 +9,6 @@ import { ZoneContextManager } from '@opentelemetry/context-zone';
 import { Resource } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
 
-//Trace Configuration
 const resource =
   Resource.default().merge(
     new Resource({
@@ -34,9 +32,10 @@ provider.addSpanProcessor(
 );
  
 provider.register({
-  contextManager: new ZoneContextManager(),
-}); 
+  contextManager: new ZoneContextManager()
  
+});  
+
 registerInstrumentations({
     instrumentations: [
         getWebAutoInstrumentations({
@@ -46,4 +45,16 @@ registerInstrumentations({
             '@opentelemetry/instrumentation-xml-http-request': {},
         }),
     ],
+});
+
+registerInstrumentations({
+    instrumentations: 
+          getWebAutoInstrumentations({
+            '@opentelemetry/instrumentation-document-load': {},
+            '@opentelemetry/instrumentation-user-interaction': {},
+            '@opentelemetry/instrumentation-fetch': {},
+            '@opentelemetry/instrumentation-xml-http-request': {},
+        
+        }),
+          
 });
