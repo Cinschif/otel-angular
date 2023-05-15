@@ -16,6 +16,7 @@ const collectorOptions = {
   headers: {}, // an optional object containing custom headers to be sent with each request
   concurrencyLimit: 1, // an optional limit on pending requests
 };
+
 const metricExporter = new OTLPMetricExporter(collectorOptions);
 const meterProvider = new MeterProvider({
   resource:resource,
@@ -27,9 +28,9 @@ meterProvider.addMetricReader(new PeriodicExportingMetricReader({
 }));
 
 // Now, start recording data
-const meter = meterProvider.getMeter('example-exporter-collector');
+const meter = meterProvider.getMeter('frontend');
 
-const counter = meter.createCounter('requests', {
+const counter = meter.createCounter('app.frontend.request', {
   description: 'Example of a Counter',
 });
 counter.add(10, { 'key': 'value' });
@@ -54,6 +55,8 @@ setInterval(() => {
   upDownCounter.add(Math.random() > 0.5 ? 1 : -1, attributes);
   histogram.record(Math.random(), attributes);
 }, 1000);
+
+
 
 
 

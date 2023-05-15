@@ -8,6 +8,8 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { ZoneContextManager } from '@opentelemetry/context-zone';
 import { Resource } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
+import { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } from '@opentelemetry/core';
+import {FsInstrumentation} from '@opentelemetry/instrumentation-fs';
 
 const resource =
   Resource.default().merge(
@@ -25,36 +27,28 @@ const provider = new WebTracerProvider({
 provider.addSpanProcessor(
      new BatchSpanProcessor(
         new OTLPTraceExporter({
-            url: 'http://localhost:4318/v1/traces',
-           
-        }) ,       
-    ),
+            url: 'http://localhost:4318/v1/traces',                      
+        }),
+        
+     )
 );
  
 provider.register({
-  contextManager: new ZoneContextManager()
+  contextManager: new ZoneContextManager(),
+  propagator: new CompositePropagator({
+    propagators: [new W3CBaggagePropagator(), new W3CTraceContextPropagator()],
+  }),
  
 });  
 
 registerInstrumentations({
+    tracerProvider:provider,
     instrumentations: [
         getWebAutoInstrumentations({
             '@opentelemetry/instrumentation-document-load': {},
             '@opentelemetry/instrumentation-user-interaction': {},
             '@opentelemetry/instrumentation-fetch': {},
             '@opentelemetry/instrumentation-xml-http-request': {},
-        }),
-    ],
-});
-
-registerInstrumentations({
-    instrumentations: 
-          getWebAutoInstrumentations({
-            '@opentelemetry/instrumentation-document-load': {},
-            '@opentelemetry/instrumentation-user-interaction': {},
-            '@opentelemetry/instrumentation-fetch': {},
-            '@opentelemetry/instrumentation-xml-http-request': {},
-        
-        }),
-          
-});
+                    }),
+    ]
+});           
