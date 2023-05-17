@@ -21,7 +21,9 @@ After cloning the repository, you should choose the branch you may want to run a
  1.  Run in the terminal `npm install` command to install the dependencies.
  3. Run the command `ng serve` to start the Angular Project.
  
- ⚠️ Please, make sure to configure the OpenTelemetry Collector with the Front-End and Back-End information to have the report's correlation of both.
+ ## ⚠️ Telemetry 
+Please, make sure to configure the OpenTelemetry Collector with the Front-End and Back-End information to have the report's correlation of both. For that, configure the `config.yaml` file in your Collector.
+Having a New Relic account and configuring the file with YOUR-API-KEY is necessary to observe the trace.
 
 If you need any help with the project, contact us.
 
