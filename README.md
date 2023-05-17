@@ -1,5 +1,5 @@
 # otel-angular
-application and correlate it with the information of one **.Net Microservice**.
+This project aims to implement **Opentelemetry** on an **Angular** application and correlate it with the information of one **.Net Microservice**.
 
 # Configuration
 |Tech| Version  |
