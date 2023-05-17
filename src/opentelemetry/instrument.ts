@@ -9,7 +9,7 @@ import { ZoneContextManager } from '@opentelemetry/context-zone';
 import { Resource } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
 import { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } from '@opentelemetry/core';
-import {FsInstrumentation} from '@opentelemetry/instrumentation-fs';
+
 
 const resource =
   Resource.default().merge(
@@ -42,13 +42,26 @@ provider.register({
 });  
 
 registerInstrumentations({
-    tracerProvider:provider,
-    instrumentations: [
+        instrumentations: [
         getWebAutoInstrumentations({
-            '@opentelemetry/instrumentation-document-load': {},
+            '@opentelemetry/instrumentation-document-load': {
+              enabled:false
+            },
             '@opentelemetry/instrumentation-user-interaction': {},
-            '@opentelemetry/instrumentation-fetch': {},
-            '@opentelemetry/instrumentation-xml-http-request': {},
-                    }),
+            '@opentelemetry/instrumentation-fetch': {
+              propagateTraceHeaderCorsUrls: /.*/,
+              clearTimingResources: true,
+              applyCustomAttributesOnSpan(span) {
+              span.setAttribute("app.synthetic_request", "false");
+        },
+            },
+            '@opentelemetry/instrumentation-xml-http-request': {
+              propagateTraceHeaderCorsUrls: /.*/,
+              clearTimingResources: true,
+              applyCustomAttributesOnSpan(span) {
+              span.setAttribute("app.synthetic_request", "false");
+              },
+            },
+      }),
     ]
 });           
