@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { HelloComponent } from './hello.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { OpenTelemetryInterceptor } from 'src/opentelemetry/interceptor';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,13 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule
      ],
      
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: OpenTelemetryInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

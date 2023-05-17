@@ -1,6 +1,6 @@
 {
     "/api/*": {
-        "target": "https://localhost:44300",
+        "target": "http://sharp.mcd:90",
         "secure": false,
         "logLevel": "debug"
     }

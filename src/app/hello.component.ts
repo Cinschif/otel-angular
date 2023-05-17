@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError} from 'rxjs/operators';
 
 @Component({
   selector: 'hello',
@@ -15,19 +15,22 @@ export class HelloComponent  {
    readonly apiURL! : string;
 
    constructor(private readonly httpClient: HttpClient,) {
-    this.apiURL = "https://localhost:44300/api/Person";
+    this.apiURL = 'http://sharp.mcd:90/order/api/v1/order';
    }
 
    get<TResult>(
     url: string,
-     ): Observable<TResult> {
-        return this.httpClient.get<TResult>(url,).pipe(
+    options: { headers?: HttpHeaders } = {}
+  ): Observable<TResult> {
+    const { headers } = options;
+    return this.httpClient.get<TResult>(url, {headers}).pipe(
       catchError(this.handleError)
     );
   }
 
    clicar(){
-       this.get(this.apiURL).subscribe(res => console.log(res))
+    const headers = new HttpHeaders({'x-client-cert':'cert'})
+    this.get(this.apiURL, {headers}).subscribe(res => console.log(res))
     
     console.log(this.name);
     console.log("Testing logs...")
