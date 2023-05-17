@@ -1,12 +1,28 @@
 # otel-angular
-Implementing OpenTelemetry on Angular Application
+application and correlate it with the information of one **.Net Microservice**.
 
-After clone the repository, maybe will be necessary to install node modules using : 
-npm install
-If the dependencies from OpenTelemetry isn´t appear, you can install :
-npm install @opentelemetry/api@^1.3.0
-To start the application , use : ng serve
-and open http://localhost:4200
-Node version v16.20.0
-To see the metrics you should have a account on new relic:
-configure your api-key on config.yaml file , and then you could see the metrics on new relic.
+# Configuration
+|Tech| Version  |
+|--|--|
+| Node  | 16.20.0 |
+| Angular  | 12.2.0 |
+
+
+## How it Works
+
+We have separated the services into branches :
+
+-   **Propagator** : Contains the complete instrumentation from Angular front-end using a local .Net Microservice that you may find the code in [here](https://github.com/Cinschif/microservices-dotnet6). 
+-   **order-otel-config** : Contains the complete instrumentation from Angular front-end using the Order Microservice from the Transformation Project. 
+
+## How to Run it
+After cloning the repository, you should choose the branch you may want to run and follow the steps below:
+
+ 1.  Run in the terminal `npm install` command to install the dependencies.
+ 3. Run the command `ng serve` to start the Angular Project.
+ 
+ ⚠️ Please, make sure to configure the OpenTelemetry Collector with the Front-End and Back-End information to have the report's correlation of both.
+
+If you need any help with the project, contact us.
+
+@[**mcdschiff**](https://github.com/mcdschiff) @[**jnonato-mcd**](https://github.com/jnonato-mcd)
