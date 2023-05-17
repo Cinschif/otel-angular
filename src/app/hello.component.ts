@@ -15,7 +15,7 @@ export class HelloComponent  {
    readonly apiURL! : string;
 
    constructor(private readonly httpClient: HttpClient,) {
-    this.apiURL = 'http://sharp.mcd:90/order/api/v1/order';
+    this.apiURL = '<you api>';
    }
 
    get<TResult>(
