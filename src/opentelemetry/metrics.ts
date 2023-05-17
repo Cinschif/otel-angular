@@ -12,7 +12,7 @@ const resource =
   );
 
 const collectorOptions = {
-  url: 'http://localhost:4318/v1/metrics', 
+  url: 'http://localhost:43188/v1/metrics', 
   headers: {}, // an optional object containing custom headers to be sent with each request
   concurrencyLimit: 1, // an optional limit on pending requests
 };
