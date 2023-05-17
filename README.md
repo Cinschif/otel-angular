@@ -10,7 +10,7 @@ This project aims to implement **Opentelemetry** on an **Angular** application a
 
 ## How it Works
 
-We have separated the services into branches :
+We have separated the project into branches :
 
 -   **Propagator** : Contains the complete instrumentation from Angular front-end using a local .Net Microservice that you may find the code in [here](https://github.com/Cinschif/microservices-dotnet6). 
 -   **order-otel-config** : Contains the complete instrumentation from Angular front-end using the Order Microservice from the Transformation Project. 
